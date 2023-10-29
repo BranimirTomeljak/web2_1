@@ -51,5 +51,5 @@ script.
       body: JSON.stringify({ sqlMatches, sqlCompetition }),
       headers: { "Content-type": "application/json" },
     });
-    document.getElementById(`btn-delete-${competitionid}`).parentElement.parentElement.remove();
+    document.getElementById(`btn-delete-${competitionid}`).parentElement.parentElement.parentElement.remove();
   }

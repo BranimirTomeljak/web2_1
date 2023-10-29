@@ -34,10 +34,10 @@ html
       
       label(for="points") Sustav bodovanja
       div(class = "points")
-        input(type="text", name="winPoints", id="winPoints", pattern="^[0-9]+(\.[0-9]+)?$", required, placeholder="Pobjeda")
+        input(type="text", name="winPoints", id="winPoints", pattern="^-?[0-9]+(\.[0-9]+)?$", required, placeholder="Pobjeda")
         span(class = "pointsSpan") / 
-        input(type="text", name="drawPoints", id="drawPoints", pattern="^[0-9]+(\.[0-9]+)?$", required, placeholder="Izjednačeno")
+        input(type="text", name="drawPoints", id="drawPoints", pattern="^-?[0-9]+(\.[0-9]+)?$", required, placeholder="Izjednačeno")
         span(class = "pointsSpan") / 
-        input(type="text", name="losePoints", id="losePoints", pattern="^[0-9]+(\.[0-9]+)?$", required, placeholder="Gubitak")
+        input(type="text", name="losePoints", id="losePoints", pattern="^-?[0-9]+(\.[0-9]+)?$", required, placeholder="Gubitak")
 
       button(type="submit") Stvori
