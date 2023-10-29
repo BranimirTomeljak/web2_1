@@ -1,0 +1,67 @@
+html
+  head
+    title= competition.competitionName
+    link(rel="stylesheet", href="/stylesheets/style.css")
+  body
+    include header
+    if user
+      - user = JSON.parse(user)
+    else
+      - user = {}
+
+    h1= competition.competitionName
+    p Created By: #{competition.createdBy}
+    p Win/Draw/Lose: #{competition.winPoints}/#{competition.drawPoints}/#{competition.losePoints}
+
+    each match in matches
+        if !currentRound || currentRound !== match.roundnumber
+            - currentRound = match.roundnumber
+            h3 Round #{match.roundnumber}
+        table(border="1")
+            tbody
+                tr
+                    td= match.team1
+                    td= match.team2
+                    td
+                        input(type='number', name='team1goals', id=`team1goals_${match.matchid}`, value=match.team1goals, readonly=user.sub !== competition.createdby)
+                    td
+                        input(type='number', name='team2goals', id=`team2goals_${match.matchid}`, value=match.team2goals, readonly=user.sub !== competition.createdby)
+                    if user.sub == competition.createdby
+                        td
+                            button(type='button', onclick=`updateScore(${match.matchid}, ${competition.competitionid})`) Update
+    
+    h2 Tablica 
+    button(onclick="window.location.reload();") Osvježi tablicu
+    table(border="1")
+        thead
+            tr
+            th Name
+            th Wins
+            th Draws
+            th Losses
+            th Points
+        tbody
+            each ranking in standings
+                tr
+                    td= ranking[0]
+                    td= ranking[1].wins
+                    td= ranking[1].draws
+                    td= ranking[1].losses
+                    td= ranking[1].points
+
+script.
+    function updateScore(matchid, competitionid){
+        const team1goals = document.getElementById(`team1goals_${matchid}`).value;
+        const team2goals = document.getElementById(`team2goals_${matchid}`).value;
+
+        if(team1goals == "" || team2goals == ""){
+            alert("Please enter both scores as numbers");
+            return;
+        }
+
+        fetch(`/competition/${competitionid}/${matchid}`, {
+            method: "POST",
+            body: JSON.stringify({ team1goals, team2goals }),
+            headers: { "Content-type": "application/json" },
+        });
+    }

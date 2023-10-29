@@ -1,0 +1,12 @@
+html
+  head
+    title Tournament App
+    link(rel="stylesheet", href="/stylesheets/style.css")
+  body
+    include header
+    if user
+      form(action="/profile", method="get")
+        button(type="submit", value="Profile") Profile
+    else
+      form(action="/login", method="get")
+        button(type="submit", value="Login") Login

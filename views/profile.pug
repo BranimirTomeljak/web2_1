@@ -1,0 +1,17 @@
+html
+  head
+    title Tournament App
+    link(rel="stylesheet", href="/stylesheets/style.css")
+  body
+    include header
+    - user = JSON.parse(user)
+    h1 #{user.name}'s profile
+
+    form(action="/create", method="get")
+      button(type="submit", value="Create competition") Stvori natjecanje
+
+    h3 Moja natjecanja
+
+    each competition in result
+      form(action=`/competition/${competition.competitionid}`, method="get")
+        button(type="submit", value=`My competition ${competition.competitionid}`) #{competition.competitionname}

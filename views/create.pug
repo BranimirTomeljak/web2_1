@@ -1,0 +1,37 @@
+html
+  head
+    title= "Stvorite natjecanje"
+    link(rel="stylesheet", href="/stylesheets/style.css")
+  body
+    include header
+    
+    form(action="/create", method="post")
+      label(for="competitionName") Naziv natjecanja
+      input(type="text", name="competitionName", id="competitionName", required)
+
+      label(for="competitorsList") Popis natjecatelja
+      textarea(name="competitorsList", id="competitorsList", required, placeholder="Od 4 do 8 imena odvojena s ; ili novim redom")
+
+      script.
+        const competitorsList = document.querySelector('#competitorsList');
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const competitors = competitorsList.value.split(/[;\n\r]/);
+          if (competitors.length < 4 || competitors.length > 8) {
+            alert('Broj natjecatelja mora biti od 4 do 8.');
+            return;
+          }
+          form.submit();
+        });
+      
+      label(for="points") Sustav bodovanja
+      div(class = "points")
+        input(type="text", name="winPoints", id="winPoints", pattern="^[0-9]+(\.[0-9]+)?$", required, placeholder="Pobjeda")
+        span(class = "pointsSpan") / 
+        input(type="text", name="drawPoints", id="drawPoints", pattern="^[0-9]+(\.[0-9]+)?$", required, placeholder="Izjednačeno")
+        span(class = "pointsSpan") / 
+        input(type="text", name="losePoints", id="losePoints", pattern="^[0-9]+(\.[0-9]+)?$", required, placeholder="Gubitak")
+
+      button(type="submit") Submit

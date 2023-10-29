@@ -125,3 +125,15 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+#my files
+FolderTraversalApp.java
+FolderTraversalApp.class
+allFiles.txt
+
+.env
+
+server.cert
+server.key
+
+database.sql
