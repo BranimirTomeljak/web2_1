@@ -2,8 +2,9 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const cors = require("cors");
-const fs = require("fs");
-const https = require("https");
+//const fs = require("fs");
+//const https = require("https");
+const http = require("http");
 const { auth } = require("express-openid-connect");
 require("dotenv").config();
 
@@ -12,10 +13,16 @@ const port = process.env.PORT || 3000;
 const config = {
   authRequired: false,
   auth0Logout: true,
-  baseURL: `https://localhost:${port}`,
+  baseURL: `http://web2-1-bt.onrender.com`,
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   secret: process.env.SECRET,
+
+  idpLogout: false,
+  authorizationParams: {
+    response_type: 'code',
+    //scope: "openid profile email"
+  },
 };
 
 app.use(auth(config));
@@ -39,7 +46,10 @@ app.use("/create", createRouter);
 app.use("/profile", profileRouter);
 app.use("/competition", competitionRouter);
 
-https
+
+http.createServer(app).listen(port, () => {console.log(`Server running on port ${port}`);});
+
+/*https
   .createServer(
     {
       key: fs.readFileSync("server.key"),
@@ -48,5 +58,5 @@ https
     app
   )
   .listen(port, function () {
-    console.log(`Server running at https://localhost:${port}/`);
-  });
+    console.log(`Server running at port ${port}/`);
+  });*/
