@@ -3,10 +3,19 @@ html
     title Tournament App
     link(rel="stylesheet", href="/stylesheets/style.css")
   body
-    include header
+    //include header
+    h2
+      a(href="/", style="text-decoration: none; color: inherit;") Tournament App
     if user
+      form(action="/", method="get")
+        button(type="submit", value="Home", style="width: 20%;") Početna stranica
       form(action="/profile", method="get")
-        button(type="submit", value="Profile") Profile
+        button(type="submit", value="Profile", style="width: 20%;") Profil
+      form(action="/logout", method="get")
+        button(type="submit", value="Logout", style="width: 20%;") Odjava
+      
     else
+      form(action="/", method="get")
+          button(type="submit", value="Home") Početna stranica
       form(action="/login", method="get")
-        button(type="submit", value="Login") Login
+        button(type="submit", value="Login") Prijava

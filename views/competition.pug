@@ -1,6 +1,6 @@
 html
   head
-    title= competition.competitionName
+    title  TA - #{competition.competitionname}
     link(rel="stylesheet", href="/stylesheets/style.css")
   body
     include header
@@ -9,14 +9,13 @@ html
     else
       - user = {}
 
-    h1= competition.competitionName
-    p Created By: #{competition.createdBy}
-    p Win/Draw/Lose: #{competition.winPoints}/#{competition.drawPoints}/#{competition.losePoints}
+    h1= competition.competitionname
+    p Pobjeda/Remi/Poraz: #{competition.winpoints}/#{competition.drawpoints}/#{competition.losepoints}
 
     each match in matches
         if !currentRound || currentRound !== match.roundnumber
             - currentRound = match.roundnumber
-            h3 Round #{match.roundnumber}
+            h3 #{match.roundnumber}. kolo
         table(border="1")
             tbody
                 tr
@@ -28,18 +27,19 @@ html
                         input(type='number', name='team2goals', id=`team2goals_${match.matchid}`, value=match.team2goals, readonly=user.sub !== competition.createdby)
                     if user.sub == competition.createdby
                         td
-                            button(type='button', onclick=`updateScore(${match.matchid}, ${competition.competitionid})`) Update
+                            button(type='button', onclick=`updateScore(${match.matchid}, ${competition.competitionid})`) Ažuriraj
     
-    h2 Tablica 
-    button(onclick="window.location.reload();") Osvježi tablicu
+    h2 Tablica
+    if user.sub == competition.createdby
+        button(onclick="window.location.reload();") Osvježi tablicu
     table(border="1")
         thead
             tr
-            th Name
-            th Wins
-            th Draws
-            th Losses
-            th Points
+            th Ime
+            th Pobjeda
+            th Remi
+            th Poraz
+            th Bodovi
         tbody
             each ranking in standings
                 tr

@@ -28,7 +28,7 @@ router.post("/", requiresAuth(), async function (req, res) {
     drawPoints,
     losePoints
   );
-  const sql = `INSERT INTO competition(competitionName, createdBy, competitorsList, winPoints, drawPoints, losePoints) VALUES(\'${competitionName}\', \'${req.oidc.user.sub}\', \'${competitorsArrayString}\', ${winPoints}, ${drawPoints}, ${losePoints}) RETURNING competitionId`;
+  const sql = `INSERT INTO competition(competitionName, createdBy, sharingEnabled, competitorsList, winPoints, drawPoints, losePoints) VALUES(\'${competitionName}\', \'${req.oidc.user.sub}\', false, \'${competitorsArrayString}\', ${winPoints}, ${drawPoints}, ${losePoints}) RETURNING competitionId`;
   const result = await db.query(sql, []);
   console.log(result[0].competitionid);
 

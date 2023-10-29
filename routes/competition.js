@@ -57,14 +57,30 @@ router.get("/:competitionid", async function (req, res) {
     (a, b) => b[1].points - a[1].points
   );
 
-  console.log(sortedStandings);
-
-  res.render("competition", {
-    user,
-    competition,
-    matches,
-    standings: sortedStandings,
-  });
+  if (req.oidc.user === undefined) {
+    if (competition.sharingenabled == true) {
+      res.render("competition", {
+        user,
+        competition,
+        matches,
+        standings: sortedStandings,
+      });
+    } else {
+      res.redirect("/");
+    }
+  } else if (
+    competition.sharingenabled == true ||
+    competition.createdby === req.oidc.user.sub
+  ) {
+    res.render("competition", {
+      user,
+      competition,
+      matches,
+      standings: sortedStandings,
+    });
+  } else {
+    res.redirect("/");
+  }
 });
 
 router.post("/:competitionid/:matchid", async function (req, res) {
@@ -74,8 +90,17 @@ router.post("/:competitionid/:matchid", async function (req, res) {
   const sql = `UPDATE match SET team1goals = ${team1goals}, team2goals = ${team2goals} WHERE matchid = ${matchid}`;
   const result = await db.query(sql, []);
 
-  res.send(200);
-  //res.redirect("/competition/" + competitionid);
+  res.sendStatus(200);
+});
+
+router.post("/sharingToggle", async function (req, res) {
+  const result = await db.query(req.body.sql, []);
+  res.sendStatus(200);
+});
+
+router.post("/deleteCompetition", async function (req, res) {
+  const resultMatches = await db.query(req.body.sqlMatches, []);
+  const resultCompetition = await db.query(req.body.sqlCompetition, []);
 });
 
 module.exports = router;

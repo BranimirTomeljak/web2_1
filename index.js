@@ -13,7 +13,8 @@ const port = process.env.PORT || 3000;
 const config = {
   authRequired: false,
   auth0Logout: true,
-  baseURL: `http://web2-1-bt.onrender.com`,
+  //baseURL: `http://web2-1-bt.onrender.com`,
+  baseURL: `http://localhost:${port}`,
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   secret: process.env.SECRET,
@@ -28,6 +29,7 @@ const config = {
 app.use(auth(config));
 
 var mainRouter = require("./routes/main");
+var signupRouter = require("./routes/sign-up");
 var createRouter = require("./routes/create");
 var profileRouter = require("./routes/profile");
 var competitionRouter = require("./routes/competition");
@@ -42,6 +44,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(cors());
 
 app.use("/", mainRouter);
+app.use("/sign-up", signupRouter);
 app.use("/create", createRouter);
 app.use("/profile", profileRouter);
 app.use("/competition", competitionRouter);

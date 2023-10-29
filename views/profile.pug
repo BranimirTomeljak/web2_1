@@ -5,13 +5,51 @@ html
   body
     include header
     - user = JSON.parse(user)
-    h1 #{user.name}'s profile
+    .profile-container
+      h3 Pozdrav #{user.name}
 
-    form(action="/create", method="get")
-      button(type="submit", value="Create competition") Stvori natjecanje
+      form(action="/create", method="get")
+        button(type="submit", class="btn-create-competition", value="Create competition") Stvori natjecanje
 
-    h3 Moja natjecanja
+      h3 Moja natjecanja
 
-    each competition in result
-      form(action=`/competition/${competition.competitionid}`, method="get")
-        button(type="submit", value=`My competition ${competition.competitionid}`) #{competition.competitionname}
+      each competition in result
+        .competition-card
+          form(action=`/competition/${competition.competitionid}`, method="get")
+            .competition-elements
+              button(type="submit", class="btn-competition", value=`My competition ${competition.competitionid}`) #{competition.competitionname}
+              button(type="button", class="btn-delete", id=`btn-delete-${competition.competitionid}`, onclick=`deleteCompetition(${competition.competitionid})`) Izbriši
+              if competition.sharingenabled == false
+                button(type="button", class="btn-enable-sharing", id=`btn-sharing-${competition.competitionid}`, onclick=`toggleSharing(${competition.competitionid})`) Omogući dijeljenje
+                span(class="sharing-text" id=`sharing-text-${competition.competitionid}` style="display: none") https://web2-1-bt.onrender.com/competition/#{competition.competitionid}
+              else 
+                button(type="button", class="btn-enable-sharing", id=`btn-sharing-${competition.competitionid}`, onclick=`toggleSharing(${competition.competitionid})`) Onemogući dijeljenje
+                span(class="sharing-text" id=`sharing-text-${competition.competitionid}` style="display: inline") https://web2-1-bt.onrender.com/competition/#{competition.competitionid}
+
+script.
+  function toggleSharing(competitionid) {
+    const sharingText = document.getElementById(`sharing-text-${competitionid}`);
+
+    var state = sharingText.style.display === "none" ? "on" : "off";
+
+    sharingText.style.display = state === "on" ? "inline" : "none";
+    document.getElementById(`btn-sharing-${competitionid}`).innerHTML = state === "on" ? "Onemogući dijeljenje" : "Omogući dijeljenje";
+
+    sql = `UPDATE competition SET sharingenabled = ${state === "on" ? true : false} WHERE competitionid = ${competitionid}`;
+    fetch(`/competition/sharingToggle`, {
+      method: "POST",
+      body: JSON.stringify({ sql }),
+      headers: { "Content-type": "application/json" },
+    })
+  }
+
+  function deleteCompetition(competitionid) {
+    sqlMatches = `DELETE FROM match WHERE competitionid = ${competitionid}`;
+    sqlCompetition = `DELETE FROM competition WHERE competitionid = ${competitionid}`;
+    fetch(`/competition/deleteCompetition`, {
+      method: "POST",
+      body: JSON.stringify({ sqlMatches, sqlCompetition }),
+      headers: { "Content-type": "application/json" },
+    });
+    document.getElementById(`btn-delete-${competitionid}`).parentElement.parentElement.remove();
+  }

@@ -1,6 +1,6 @@
 html
   head
-    title= "Stvorite natjecanje"
+    title TA - Novo natjecanje
     link(rel="stylesheet", href="/stylesheets/style.css")
   body
     include header
@@ -19,6 +19,12 @@ html
         form.addEventListener('submit', (event) => {
           event.preventDefault();
           const competitors = competitorsList.value.split(/[;\n\r]/);
+
+          const uniqueCompetitors = new Set(competitors);
+          if (uniqueCompetitors.size !== competitors.length) {
+            alert('Svi natjecatelji moraju imati različita imena.');
+            return;
+          }
           if (competitors.length < 4 || competitors.length > 8) {
             alert('Broj natjecatelja mora biti od 4 do 8.');
             return;

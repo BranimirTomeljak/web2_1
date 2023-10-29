@@ -1,7 +1,14 @@
 header
-  h1 Tournament App
-  if user
-    .user-links
+  .header-container
+    h2
+      a(href="/", style="text-decoration: none; color: inherit;") Tournament App
+    if user
+      .user-links
         button(onclick="window.location.href='/'") Početna stranica
         button(onclick="window.location.href='/profile'") Profil
         button(onclick="window.location.href='/logout'") Odjava
+    else 
+      .user-links
+        button(onclick="window.location.href='/login'") Prijava
+        button(onclick="window.location.href='/sign-up'") Registracija
+
