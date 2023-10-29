@@ -18,11 +18,11 @@ const config = {
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   secret: process.env.SECRET,
 
-  idpLogout: false,
+  /*idpLogout: false,
   authorizationParams: {
-    response_type: 'code',
+    response_type: "code",
     //scope: "openid profile email"
-  },
+  },*/
 };
 
 app.use(auth(config));
@@ -46,8 +46,10 @@ app.use("/create", createRouter);
 app.use("/profile", profileRouter);
 app.use("/competition", competitionRouter);
 
-
-http.createServer(app).listen(port, () => {console.log(`Server running on port ${port}`);});
+//http dovoljan jer render automatski koristi https
+http.createServer(app).listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
 
 /*https
   .createServer(
