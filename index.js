@@ -13,8 +13,8 @@ const port = process.env.PORT || 3000;
 const config = {
   authRequired: false,
   auth0Logout: true,
-  //baseURL: `http://web2-1-bt.onrender.com`,
-  baseURL: `http://localhost:${port}`,
+  baseURL: `http://web2-1-bt.onrender.com`,
+  //baseURL: `http://localhost:${port}`,
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
   secret: process.env.SECRET,
