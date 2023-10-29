@@ -8,8 +8,6 @@ router.get("/", requiresAuth(), async function (req, res) {
 
   const sql = `SELECT * FROM competition WHERE createdBy = '${req.oidc.user.sub}' ORDER BY competitionid ASC`;
   const result = await db.query(sql, []);
-  //console.log(result);
-
 
   res.render("profile", { user, result });
 });

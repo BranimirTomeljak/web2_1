@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../db/db");
+const { requiresAuth } = require("express-openid-connect");
 
 router.get("/:competitionid", async function (req, res) {
   const competitionid = req.params.competitionid;
@@ -83,7 +84,7 @@ router.get("/:competitionid", async function (req, res) {
   }
 });
 
-router.post("/:competitionid/:matchid", async function (req, res) {
+router.post("/:competitionid/:matchid", requiresAuth(), async function (req, res) {
   const { matchid } = req.params;
   const { team1goals, team2goals } = req.body;
 
@@ -93,12 +94,12 @@ router.post("/:competitionid/:matchid", async function (req, res) {
   res.sendStatus(200);
 });
 
-router.post("/sharingToggle", async function (req, res) {
+router.post("/sharingToggle", requiresAuth(), async function (req, res) {
   const result = await db.query(req.body.sql, []);
   res.sendStatus(200);
 });
 
-router.post("/deleteCompetition", async function (req, res) {
+router.post("/deleteCompetition", requiresAuth(), async function (req, res) {
   const resultMatches = await db.query(req.body.sqlMatches, []);
   const resultCompetition = await db.query(req.body.sqlCompetition, []);
 });

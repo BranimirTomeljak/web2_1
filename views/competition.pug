@@ -12,6 +12,7 @@ html
     h1= competition.competitionname
     p Pobjeda/Remi/Poraz: #{competition.winpoints}/#{competition.drawpoints}/#{competition.losepoints}
 
+    //nisam najbolji frontendovac, ispricavam se :)
     each match in matches
         if !currentRound || currentRound !== match.roundnumber
             - currentRound = match.roundnumber

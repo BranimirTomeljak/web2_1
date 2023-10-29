@@ -17,13 +17,7 @@ const config = {
   //baseURL: `http://localhost:${port}`,
   clientID: process.env.CLIENT_ID,
   issuerBaseURL: process.env.ISSUER_BASE_URL,
-  secret: process.env.SECRET,
-
-  /*idpLogout: false,
-  authorizationParams: {
-    response_type: "code",
-    //scope: "openid profile email"
-  },*/
+  secret: process.env.SECRET
 };
 
 app.use(auth(config));

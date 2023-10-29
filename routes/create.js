@@ -60,7 +60,7 @@ function generateRoundRobinSchedule(teams) {
     }
 
     rounds.push(round);
-    teams.splice(1, 0, teams.pop()); // Rotate teams for the next round
+    teams.splice(1, 0, teams.pop()); // Rotiranje timova za iduci round
   }
 
   return rounds;
